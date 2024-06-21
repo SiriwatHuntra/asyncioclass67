@@ -6,6 +6,7 @@ import time
 def thread_function(name):
     logging.info('Thread %s: starting', name)
     #add 2s in beacon
+    #we need to write it as new func because beacon not same as a bread!
     """if (name == 2):
         time.sleep(2)"""
     time.sleep(2)

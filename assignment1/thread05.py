@@ -22,5 +22,5 @@ if __name__ == '__main__':
     logging.info('Main  : before running thread')
     x.start()
     logging.info('Main  :wait for thread finnish')
-    #x.join() #if this uncomment it will wait to join all thread before do the last line
+    #x.join() #if this uncomment it will wait to join all thread before do the next one
     logging.info('Mian  : all done')
