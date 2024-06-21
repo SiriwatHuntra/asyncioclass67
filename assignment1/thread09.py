@@ -9,6 +9,7 @@ class FakeDatabase:
         self.value = 0
         self._lock = threading.Lock()
 
+    # Lock memory when thread use and lock until finish update it
     def locked_update(self, name):
         logging.info("Thread %s: starting update", name)
         logging.debug("Thread %s about to lock", name)
@@ -23,7 +24,7 @@ class FakeDatabase:
 if __name__ == "__main__" :
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level= logging.DEBUG , datefmt="%H:%M:%S")
-    #logging.getLogger().setLevel(logging.DEBUG)
+    logging.getLogger().setLevel(logging.DEBUG)
     
     database = FakeDatabase()
     logging.info(
