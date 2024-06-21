@@ -17,5 +17,6 @@ if __name__ == "__main__":
         executor.map(thread_function, range(3))
 
 #preemtive multitask
-# 1st time => 0,1,2
-# 2nd time => not same
+# 1st time => start with 012 end with 120
+# 2nd time => start with 012 end with 102
+# 3rd time => start with 012 end with 021
