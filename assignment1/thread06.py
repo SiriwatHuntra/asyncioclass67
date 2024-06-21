@@ -5,6 +5,9 @@ import time
 
 def thread_function(name):
     logging.info('Thread %s: starting', name)
+    #add 2s in beacon
+    """if (name == 2):
+        time.sleep(2)"""
     time.sleep(2)
     logging.info("thread %s: fininshing", name)
 

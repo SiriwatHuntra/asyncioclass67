@@ -16,4 +16,6 @@ if __name__ == "__main__":
     with concurrent.futures.ThreadPoolExecutor(max_workers = 3) as executor:
         executor.map(thread_function, range(3))
 
-
+#preemtive multitask
+# 1st time => 0,1,2
+# 2nd time => not same
