@@ -5,7 +5,7 @@ from time import sleep, ctime, time
 def cooking(index):
     print(f'{ctime()} kitchen-{index} : begin cooking...')
     sleep(2)
-    print(f'{ctime()} Kitchen-{index}} : Cooking done!')
+    print(f'{ctime()} Kitchen-{index} : Cooking done!')
 
 if __name__ == "main":
     #Begin of main thread
