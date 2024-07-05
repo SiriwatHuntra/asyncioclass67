@@ -20,4 +20,9 @@ async def fry_eggs():
 
 
 async def main():
-    start
+    start = time()
+    await make_coffee()
+    await fry_eggs()
+    print(f'breakfast is already in {time()-start} min.')
+
+asyncio.run(main()) #run top_Level func concurrently
