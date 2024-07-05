@@ -25,4 +25,6 @@ async def main():
     await fry_eggs()
     print(f'breakfast is already in {time()-start} min.')
 
+#Every def is coroutine, it dosen't have any task
+
 asyncio.run(main()) #run top_Level func concurrently
