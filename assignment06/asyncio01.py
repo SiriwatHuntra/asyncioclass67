@@ -8,15 +8,16 @@ class AsyncDatabaseConection:
         print(f'Connecting to the database {self.db_name}...')
         await asyncio.sleep(1) #simulate connection process
         print(f"Connect to the database {self.db_name}.")
-    
-    async def __aexit_(self, exec_type, exc, tb):
+        return self
+
+    async def __aexit__(self, exec_type, exc, tb):
         print(f"Closing the database connection to {self.db_name}.")
         await asyncio.sleep(1) #simulate teardown process
         print(f"Closed the database connection to {self.db_name}.")
         if exc:
             print(f"An exception occurred: {exc}")
 
-    async def fetsh_data(self):
+    async def fetch_data(self):
         await asyncio.sleep(1) #simulate asycn data fetch
         return {"data" : "sample data"}
     
