@@ -1,6 +1,10 @@
 import time
 import asyncio
 
+#Class for return obj.
+#Class => ingradient
+#Def => activity
+#Should define class for recive and return obj.
 class Coffee:
     pass
 
@@ -22,9 +26,9 @@ def PourCoffee():
     print(f'{time.ctime()} - Finish pour coffee...')
     return Coffee()
 
-def ApplyButter():
+async def ApplyButter():
     print(f'{time.ctime()} - Begin apply butter...')
-    time.sleep(1)
+    await asyncio.sleep(1)
     print(f'{time.ctime()} - Finish apply butter...')
 
 async def FryEggs(eggs):
@@ -35,23 +39,25 @@ async def FryEggs(eggs):
         print(f'{time.ctime()} - Frying ', egg+1,' eggs')
         await asyncio.sleep(1)
     print(f'{time.ctime()} - Finish fry eggs...')
-    print(f'{time.ctime()} - >>>>>> Fry eggs are ready\n')
+    print(f'{time.ctime()} - >>>>>> Fry eggs are ready')
     return Egg()
 
 async def FryBacon():
     print(f'{time.ctime()} - Begin fry bacon...')
     await asyncio.sleep(2)
     print(f'{time.ctime()} - Finish fry bacon...')
-    print(f'{time.ctime()} - >>>>> Fry bacon are ready...\n')
+    print(f'{time.ctime()} - >>>>> Fry bacon are ready...')
+    return bacon()
 
 async def ToastBread(slices):
     for slice in range(slices):
         print(f'{time.ctime()} - Toasting bread', slice+1)
         await asyncio.sleep(1)
         print(f'{time.ctime()} - Bread ', slice+1, 'toasted')
-        ApplyButter()
+        await ApplyButter()
         print(f'{time.ctime()} - Toasting ', slice+1, ' ready')
     print(f'{time.ctime()} - >>>>>> Toast are ready\n')
+    return Toast()
 
 def PourJuice():
     print(f'{time.ctime()} - Begin pour juice...')
@@ -63,13 +69,11 @@ async def main():
     PourCoffee()
     print(f'{time.ctime()} - >>>>>> Coffee is ready\n')
 
-    fryEggs_task = asyncio.create_task(FryEggs(2))
-    bacon_tasks = asyncio.create_task(FryBacon())
-    toast_tasks = asyncio.create_task(ToastBread(2))
-    await bacon_tasks
-    await fryEggs_task
-    await toast_tasks
+    Task = [asyncio.create_task(FryEggs(2)),
+            asyncio.create_task(FryBacon()),
+            asyncio.create_task(ToastBread(2))]
 
+    await asyncio.gather(*Task)    
     print(f'{time.ctime()} - Nearly finish...')
     PourJuice()
 
