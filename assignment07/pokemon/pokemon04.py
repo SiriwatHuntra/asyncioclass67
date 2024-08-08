@@ -11,17 +11,8 @@ async def main():
     i = 0
     # Iterate through all json files in the directory.
     for path in pathlist:
-        async with aiofiles.open(f'{path}', mode='r') as f:
-            content = await f.read()
 
-        pokemon = json.loads(content)
-        name = pokemon['name']
-        moves = [move['move']['name'] for move in pokemon['moves']]
-        
-        async with aiofiles.open(f'{pokemonmove_directory}/{name}_move.txt', mode='w') as f:
-            await f.write('\n'.join(moves))
 
-        #print(path)
-
+        print(path)
 
 asyncio.run(main())

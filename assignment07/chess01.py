@@ -2,7 +2,7 @@ import time
 
 judit_compute = 0.1
 opponent_compute = 0.5
-opponent = 1
+opponent = 3
 move_board = 30
 
 def main(i):
