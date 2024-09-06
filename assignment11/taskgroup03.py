@@ -29,28 +29,27 @@ class Customer:
 # After finishing processing the data, 
 # we use queue.task_done() to tell the queue that the data has been successfully processed.
 async def checkout_customer(queue: Queue, cashier_number: int):
+    total_time = 0.0
+    customer_count = 0
+    while not queue.empty():
+        customer: Customer = await queue.get()
+        customer_start_time = time.perf_counter()
+        print(f"The Cashier-{cashier_number} "
+              f"Will checkout Customer_{customer.customer_id} ")
+        for product in customer.produsts:
+            print (f"The Cashier_{cashier_number} "
+                   f"Will checkout Customer_{customer.customer_id}'s  "
+                   f"Product_{product.product_name} "
+                   f"in {product.checkout_time} secs ")
+            await asyncio.sleep(product.checkout_time)
+        print(f'The Cashier_{cashier_number} '
+              f'Finish chackout Customer_{customer.customer_id} '
+              f"in {round(time.perf_counter() - customer_start_time, ndigits = 2)} secs ")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        queue.task_done()
+        customer_count += 1
+        total_time += time.perf_counter() - customer_start_time
+    return total_time, customer_count
 
 
 # we implement the generate_customer method as a factory method for producing customers.
@@ -88,8 +87,17 @@ async def main():
     CASHIER = 2
     customer_queue = Queue(QUEUE)
     customers_start_time = time.perf_counter()
-    
-    async with asyncio.TaskGroup() as group:
-    
+    customer_producer = asyncio.create_task(customer_generation(customer_queue, CUSTOMER))
+    cashier  = [checkout_customer(customer_queue, the_id) for the_id in range(CASHIER)]
+    result = await asyncio.gather(customer_producer, *cashier)
+
+    for i, (total_time, customer_count) in enumerate(result[1:]):
+        print(f"Cashier {i} checked out {customer_count} customers in {total_time:.2f} seconds")
+
+    print(f"the super market process finished "
+          f"{customer_producer.result()} customers "
+          f"in {round(time.perf_counter() - customers_start_time, ndigits = 2)} secs")
+
 if __name__ == "__main__":
     asyncio.run(main())
+
