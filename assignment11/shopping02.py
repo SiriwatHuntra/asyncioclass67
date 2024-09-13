@@ -36,6 +36,8 @@ async def checkout_customer(queue: Queue, cashier_number: int):
         customer_start_time = time.perf_counter()
         print(f"The Cashier-{cashier_number} "
               f"Will checkout Customer_{customer.customer_id} ")
+        await asyncio.sleep(0.01)
+
         for product in customer.produsts:
             print (f"The Cashier_{cashier_number} "
                    f"Will checkout Customer_{customer.customer_id}'s  "
@@ -44,12 +46,13 @@ async def checkout_customer(queue: Queue, cashier_number: int):
             await asyncio.sleep(product.checkout_time)
         print(f'The Cashier_{cashier_number} '
               f'Finish chackout Customer_{customer.customer_id} '
-              f"in {round(time.perf_counter() - customer_start_time, ndigits = 2)} secs ")
+              f"in {round(time.perf_counter() - customer_start_time, ndigits = 1)} secs ")
 
         queue.task_done()
         customer_count += 1
         total_time += time.perf_counter() - customer_start_time
-    return total_time, customer_count
+    total = f"Cashier {cashier_number} checked out {customer_count} customers in {total_time:.2f} seconds"
+    return total
 
 # we implement the generate_customer method as a factory method for producing customers.
 #
@@ -82,14 +85,16 @@ async def customer_generation(queue: Queue, customers: int):
 # Finally, we use the main method to initialize the queue, 
 # producer, and consumer, and start all concurrent tasks.
 async def main():
-    customer_queue = Queue(3)
+    QUEQUE = 3
+    CUSTOMER = 10
+    CASHIER = 5
+    customer_queue = Queue(QUEQUE)
     customers_start_time = time.perf_counter()
-    customer_producer = asyncio.create_task(customer_generation(customer_queue, 10))
-    cashier  = [checkout_customer(customer_queue, the_id) for the_id in range(5)]
+    customer_producer = asyncio.create_task(customer_generation(customer_queue, CUSTOMER))
+    cashier  = [checkout_customer(customer_queue, the_id) for the_id in range(CASHIER)]
     result = await asyncio.gather(customer_producer, *cashier)
-
-    for i, (total_time, customer_count) in enumerate(result[1:]):
-        print(f"Cashier {i} checked out {customer_count} customers in {total_time:.2f} seconds")
+    for i in result:
+        print(i)
 
     print(f"the super market process finished "
           f"{customer_producer.result()} customers "
