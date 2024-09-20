@@ -15,6 +15,7 @@ async def new_topic():
            print(f"create topic with partition = {3} replication = {3} ")
     finally:
         await admin.close()
+
 async def consume():
 
     consumer = AIOKafkaConsumer(
@@ -32,4 +33,8 @@ async def consume():
         # Will leave consumer group; perform autocommit if enabled.
         await consumer.stop()
 
-asyncio.run(consume())
+async def main():
+    await new_topic()
+    await consume()
+
+asyncio.run(main())
